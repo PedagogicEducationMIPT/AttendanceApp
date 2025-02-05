@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <script type="module">
+        import { LitElement, html, css } from 'https://cdn.jsdelivr.net/gh/lit/dist@2/core/lit-core.min.js';
+
+        class AttendanceTable extends LitElement {
+            static properties = {
+                students: { type: Array },
+                dates: { type: Array }
+            };
+
+            static styles = css`
+                table {
+                    border-collapse: collapse;
+                    margin: 20px;
+                }
+                th, td {
+                    border: 1px solid #ddd;
+                    padding: 8px;
+                    text-align: center;
+                }
+                th {
+                    background-color: #f2f2f2;
+                    position: sticky;
+                    top: 0;
+                }
+                .student-name {
+                    font-weight: bold;
+                }
+                input[type="checkbox"] {
+                    transform: scale(1.5);
+                }
+                .header-date {
+                    min-width: 120px;
+                }
+                button {
+                    margin-left: 20px;
+                    padding: 10px 20px;
+                }
+            `;
+
+            constructor() {
+                super();
+                this.students={
+                    'nikita': [0,1,2],
+                    'sasha': [2],
+	            };
+                this.dates=['2024-03-01', '2024-03-08', '2024-03-15', '2024-03-22'];
+            }
+
+
+            render() {
+                return html`
+                    <h1>Посещаемость</h1>
+                    <table>
+                        <tr>
+                            <th>Student Name</th>
+                            ${this.dates.map(date => html`<th class="header-date">${date}</th>`)}
+                        </tr>
+                        ${this.students.map(student => html`
+                            <tr>
+                                <td class="student-name">${student}</td>
+                                ${this.dates.map(() => html`
+                                    <td><input type="checkbox"></td>
+                                `)}
+                            </tr>
+                        `)}
+                    </table>
+                    <button @click=${this.saveAttendance}>Save Attendance</button>
+                `;
+            }
+
+            saveAttendance() {
+                const attendanceData = this.students.map((student, rowIndex) => {
+                    const checkboxes = this.shadowRoot.querySelectorAll(`tr:nth-child(${rowIndex + 2}) input`);
+                    return {
+                        student,
+                        attendance: Array.from(checkboxes).map(checkbox => checkbox.checked)
+                    };
+                });
+                
+                console.log('Attendance saved:', attendanceData);
+                alert('Attendance saved successfully!');
+            }
+        }
+
+        customElements.define('attendance-table', AttendanceTable);
+    </script>
+</head>
+<body>
+    <attendance-table
+
+    ></attendance-table>
+</body>
+</html>

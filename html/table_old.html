@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Student Attendance</title>
+    <style>
+        table {
+            border-collapse: collapse;
+            margin: 20px;
+        }
+        th, td {
+            border: 1px solid #ddd;
+            padding: 8px;
+            text-align: center;
+        }
+        th {
+            background-color: #f2f2f2;
+        }
+        .student-name {
+            font-weight: bold;
+        }
+        input[type="checkbox"] {
+            transform: scale(1.5);
+        }
+        .header-date {
+            min-width: 120px;
+        }
+        .fixed-header {
+            position: sticky;
+            top: 0;
+            background: white;
+            z-index: 1;
+        }
+    </style>
+</head>
+<body>
+    <h1>Class Attendance</h1>
+    
+    <table>
+        <tr class="fixed-header">
+            <th>Student Name</th>
+            <th class="header-date">2024-03-01</th>
+            <th class="header-date">2024-03-08</th>
+            <th class="header-date">2024-03-15</th>
+            <th class="header-date">2024-03-22</th>
+        </tr>
+        
+        <tr>
+            <td class="student-name">John Doe</td>
+            <td><input type="checkbox"></td>
+            <td><input type="checkbox"></td>
+            <td><input type="checkbox"></td>
+            <td><input type="checkbox"></td>
+        </tr>
+        
+        <tr>
+            <td class="student-name">Jane Smith</td>
+            <td><input type="checkbox"></td>
+            <td><input type="checkbox"></td>
+            <td><input type="checkbox"></td>
+            <td><input type="checkbox"></td>
+        </tr>
+        
+        <tr>
+            <td class="student-name">Bob Johnson</td>
+            <td><input type="checkbox"></td>
+            <td><input type="checkbox"></td>
+            <td><input type="checkbox"></td>
+            <td><input type="checkbox"></td>
+        </tr>
+    </table>
+
+    <button onclick="saveAttendance()" style="margin-left: 20px; padding: 10px 20px;">
+        Save Attendance
+    </button>
+
+    <script>
+        function saveAttendance() {
+            const attendanceData = [];
+            const checkboxes = document.querySelectorAll('input[type="checkbox"]');
+            
+            checkboxes.forEach(checkbox => {
+                if (checkbox.checked) {
+                    const row = checkbox.closest('tr');
+                    const studentName = row.querySelector('.student-name').textContent;
+                    const dateIndex = Array.from(row.cells).indexOf(checkbox.parentElement);
+                    const date = document.querySelector(`th.header-date:nth-child(${dateIndex})`).textContent;
+                    
+                    attendanceData.push({
+                        student: studentName,
+                        date: date,
+                        present: true
+                    });
+                }
+            });
+
+            // Here you can implement saving logic (e.g., send to server)
+            console.log('Attendance saved:', attendanceData);
+            alert('Attendance saved successfully!');
+        }
+    </script>
+</body>
+</html>
