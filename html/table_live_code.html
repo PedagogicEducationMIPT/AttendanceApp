@@ -1,0 +1,40 @@
+<html>
+    <head>
+        <title>Таблица</title>
+        <style>
+            table {
+                border-collapse: collapse;
+            }
+            th {
+                border: 1px solid #ddd;
+                padding: 8px;
+                background-color: #fff;
+                font-weight: lighter;
+            }
+
+            .head {
+                background-color: #f2f2f2;
+                font-weight: bold;
+            }
+            
+            .student {
+                font-weight: bold;
+            }
+        </style>
+    </head>
+    <body>
+        <table>
+            <tr>
+                <th class="head">Студенты</th>
+                <th class="head">2024-03-01</th>
+            </tr>
+            <tr>
+                <th class="student">Никита</th>
+                <th id="0-0">Посетил</th>
+            </tr>
+        </table>
+    </body>
+    <script>
+        document.getElementById("0-0").innerHTML="Не посетил"
+    </script>
+</html>
