@@ -1,18 +1,23 @@
 from datetime import date
 
 from fastapi import FastAPI, Response
-from pydantic import BaseModel
-from src.db import AttendanceDatabase
-
-app = FastAPI('/')
-db = 
+from src.db import AttendanceDatabase,Attendance
 
 
+class WebApp(FastAPI):
+    def __init__(self, db: AttendanceDatabase):
+        super().__init__()
+        self.db = db
+        self.register()
+
+    def register(self):
+        @self.post('/attendance/record')
+        def record(attendance: Attendance):
+            self.db.record(attendance)
+            return Response(status_code=200)
+
+        @self.get('/attendance')
+        def list_all_attendance():
+            return self.db.list_all()
 
 
-@app.post('/attendance/record')
-def record():
-    return Response(status_code=200)
-
-@app.get('/attendance')
-def list_all_attendance():
