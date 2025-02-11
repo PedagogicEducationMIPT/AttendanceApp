@@ -1,3 +1,4 @@
-from uvicorn import uvicron
+import uvicorn
 
-uvicron
+
+uvicorn.run()

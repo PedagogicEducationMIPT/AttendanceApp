@@ -3,3 +3,5 @@ install:
 	poetry self update
 	poetry install
 
+test:
+	pytest test/
