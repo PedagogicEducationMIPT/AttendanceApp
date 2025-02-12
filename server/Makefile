@@ -5,3 +5,6 @@ install:
 
 test:
 	pytest test/
+
+start:
+	python src/
