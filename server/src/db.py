@@ -1,4 +1,3 @@
-import json
 from datetime import date
 from pathlib import Path
 from pydantic import BaseModel
@@ -26,6 +25,10 @@ class AttendanceDatabase:
         
     def list_all(self):
         return self._retrieve_rows().attendances
+    
+    def _deduplicate(self):
+        # ваш код
+        ...
 
     def record(self, attendance: Attendance):
         db = self._retrieve_rows()
