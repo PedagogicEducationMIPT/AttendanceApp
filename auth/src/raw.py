@@ -11,37 +11,42 @@ class RegistrationForm(BaseModel):
     username: str
     password: str
 
-users: set[RegistrationForm] = set()
+users: set[str] = set()
 
-@app.post('/register')
+@app.post('/public/register')
 def register(form: RegistrationForm):
-    if form in users:
+    json_dump = form.model_dump_json()
+    if json_dump in users:
         raise HTTPException(
             status_code=400,
             detail='Уже зарегистрирован'
         ) 
-    users.add(form)
+    users.add(json_dump)
     return Response(
         status_code=200,
         content='Успешно зарегистрирован.'
     )
 
 
-@app.post('/auth')
+@app.post('/public/auth')
 def auth(form: RegistrationForm):
-    if form not in users:
+    json_dump = form.model_dump_json()
+    if json_dump not in users:
         raise HTTPException(
             status_code=400,
             detail='Нужно зарегистрироваться'
         )
-    return hash(form.password)
+    return json_dump
 
 
 private_info = 'Ответ: 10'
 
-@app.get('/private/read')
-def read(authorization: str = Header()):
-    if hash(authorization) in [hash(user.password) for user in users]:
+class AuthorizationModel(BaseModel):
+    token: str
+
+@app.post('/private/read')
+def read(authorization: AuthorizationModel):
+    if authorization.token in users:
         return private_info
     else:
         raise HTTPException(
