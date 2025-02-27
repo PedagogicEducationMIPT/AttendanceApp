@@ -8,5 +8,11 @@ create-private-key-crt-pair:
 		-addext "subjectAltName=IP:127.0.0.1" \
 		-nodes
 
-decode:
+show-cert:
+	openssl x509  -in certificate.crt -text
+
+download-cert:
+	openssl s_client \
+		-connect 127.0.0.1:8000 \
+		-showcerts </dev/null 2>/dev/null | openssl x509 -text -noout
 	
